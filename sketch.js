@@ -2,9 +2,10 @@ const Engine = Matter.Engine;
 const World= Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
+const Events = Matter.Events;
 
 var divisions = [];
-var particles1 = [];
+//var particles = [];
 var plinkos = [];
 
 var divisionHeight = 300;
@@ -15,20 +16,15 @@ var turn = 0;
 var PLAY =1;
 
 var END=0;
-var particle;
+var particles;
 var gameState = PLAY;
+var check=0
+
 function setup() {
 
   engine = Engine.create();
   world = engine.world;
   createCanvas(500,800);
-
-
- 
-  
-  
-
-
 
   ground1 = new Ground(240,790,800,20);
 
@@ -59,11 +55,17 @@ function setup() {
   
   
 
-  Engine.run(engine);
+  //Engine.update(engine);
 }
 
 function draw() {
   background(0); 
+  
+  console.log(turn);
+
+ 
+  ground1.display();
+  
   Engine.update(engine); 
 
   fill("white");
@@ -100,59 +102,63 @@ function draw() {
   }
 */
 
-  if(particle !== undefined){
-    particle.display();
-    if(particle.body.position.y>760){
-    
-      if(particle.body.position.x<90){
+  if(particles !== null && check!==0){
+    console.log(particles)
+    particles.display();
+    if(particles.body.position.y>760){
+    console.log(particles.body.position.x)
+      if(particles.body.position.x<90){
         score = score+500;
-        particle =undefined;
+      // particles =null;
       
       }
-      if(particle.body.position.x>90 && particle.body.position.x<170 ){
+      if(particles.body.position.x>90 && particles.body.position.x<170 ){
         score = score+200;
-        particle =undefined;
+        //particles =null;
       }
-      if(particle.body.position.x>170 && particle.body.position.x<250 ){
+      if(particles.body.position.x>170 && particles.body.position.x<250 ){
         score = score+400;
-        particle = undefined;
+        //particles = null;
       }
-      if(particle.body.position.x>250 && particle.body.position.x<330 ){
+      if(particles.body.position.x>250 && particles.body.position.x<330 ){
         score = score+150;
-        particle = undefined;
+      // particles = null;
       }
-      if(particle.body.position.x>330 && particle.body.position.x<410 ){
+      if(particles.body.position.x>330 && particles.body.position.x<410 ){
         score = score+600;
-        particle = undefined;
+        //particles = null;
+      
       }
-      if(particle.body.position.x>410 && particle.body.position.x<490 ){
+      if(particles.body.position.x>410 && particles.body.position.x<490 ){
         score = score+250;
-        particle = undefined;
+        //particles = null;
       }
-     
+      particles = null;
     }
+   
+         
 
   }
+  if( turn === 5)
+  {
+    //console.log("Hi");
+   gameState = END
+   textSize(70); 
+   text("GAME OVER",150,250) 
+  }
+
   
-  
-
-
-  ground1.display();
-  drawSprites();
-
-   
- 
-//mousePressed();
-
 }
 
-function keyPressed(){
-  if(keyCode===32){
-    if(gameState===PLAY ){
+function mousePressed(){
+
+check=1
+
+  if(gameState!==END ){
     console.log(gameState);
-    particle = new Particle(mouseX,10,20);
-   
-    console.log(particle);
+    //particle = new Particle(mouseX,10,20);
+    particles = new Particle(mouseX,10,20);
+    console.log(particles);
     //particles1.push(particle);
     turn++;
 
@@ -160,9 +166,8 @@ function keyPressed(){
       particles1[m].display();
       console.log(particles1[m]);
     }*/
-    
   }
 
-}
+ 
   
 }
